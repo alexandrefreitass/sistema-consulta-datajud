@@ -11,5 +11,20 @@
 .pad-70 {
     padding: 0 70px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media (max-width: 768px) {
+    .pad-70 {
+        padding: 0 20px;
+    }
+}
+
+html, body { min-height: 100%; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(20, 184, 166, 0.11), transparent 32rem),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.1), transparent 28rem),
+        #f8fafc;
+    color: #0f172a;
+}

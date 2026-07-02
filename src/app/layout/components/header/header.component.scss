@@ -1,6 +1,54 @@
 .app-header {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 20px 0 100px;
+    gap: 14px;
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 22px 0 28px;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0f766e, #1d4ed8);
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0;
+    box-shadow: 0 14px 30px rgba(29, 78, 216, 0.22);
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+
+    strong {
+        color: #0f172a;
+        font-size: 16px;
+    }
+
+    span {
+        color: #64748b;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        width: min(1180px, calc(100% - 32px));
+        padding: 16px 0 20px;
+    }
+
+    .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+
+    .brand-copy span {
+        font-size: 12px;
+    }
 }

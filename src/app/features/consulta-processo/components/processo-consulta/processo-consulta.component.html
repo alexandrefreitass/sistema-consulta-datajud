@@ -1,15 +1,17 @@
-<!-- src/app/components/processo-consulta/processo-consulta.component.html -->
 <div class="processo-consulta">
-  <!-- Formulário de Consulta -->
   <div class="formulario-consulta">
-    <h2>Consultar Processo Judicial</h2>
-    
+    <div class="form-heading">
+      <span>Pesquisa DataJud</span>
+      <h2>Consulta judicial</h2>
+      <p>Selecione o tribunal e informe o numero do processo.</p>
+    </div>
+
     <form (ngSubmit)="onSubmit()" #consultaForm="ngForm">
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Selecione o Tribunal</mat-label>
-          <mat-select 
-            [(ngModel)]="tribunalSelecionado" 
+          <mat-label>Selecione o tribunal</mat-label>
+          <mat-select
+            [(ngModel)]="tribunalSelecionado"
             name="tribunal"
             required>
             @for (tribunal of tribunais; track tribunal.alias) {
@@ -23,9 +25,9 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Número do Processo</mat-label>
-          <input 
-            matInput 
+          <mat-label>Numero do processo</mat-label>
+          <input
+            matInput
             [(ngModel)]="numeroProcesso"
             name="numeroProcesso"
             placeholder="Ex: 1234567-89.2023.8.26.0001"
@@ -34,84 +36,81 @@
       </div>
 
       <div class="form-actions">
-        <button 
-          mat-raised-button 
-          color="primary" 
+        <button
+          mat-raised-button
+          color="primary"
           type="submit"
           [disabled]="isLoading || consultaEmAndamento"
           class="btn-consultar">
           @if (isLoading || consultaEmAndamento) {
-            <span>⏳ Consultando...</span>
+            <span>Consultando...</span>
           } @else {
-            <span>🔍 Consultar Processo</span>
+            <span>Consultar processo</span>
           }
         </button>
-        
+
         @if (consultaFeita) {
-          <button 
-            mat-stroked-button 
+          <button
+            mat-stroked-button
             color="warn"
             type="button"
             (click)="limparConsulta()"
             [disabled]="isLoading || consultaEmAndamento"
             class="btn-limpar">
-            🗑️ Limpar Consulta
+            Limpar consulta
           </button>
         }
       </div>
     </form>
   </div>
 
-  <!-- Área de Resultados - Sempre presente para evitar layout shift -->
   <div class="resultados-container" [class.visible]="consultaFeita">
-    
-    <!-- Estado: Processo Encontrado -->
     <div class="resultado-consulta" [class.show]="consultaFeita && processo" [class.hide]="!consultaFeita || !processo">
-      <h3>Detalhes do Processo Judicial</h3>
-      
+      <h3>Detalhes do processo</h3>
+
       @if (processo) {
         <div class="processo-info">
           <div class="info-grid">
             <div class="info-item">
-              <label>ID do Processo:</label>
+              <label>ID do processo:</label>
               <span>{{ processo._id }}</span>
             </div>
-            
+
             <div class="info-item">
-              <label>Número do Processo:</label>
+              <label>Numero do processo:</label>
               <span>{{ processo._source.numeroProcesso }}</span>
             </div>
-            
+
             <div class="info-item">
               <label>Classe:</label>
               <span>{{ processo._source.classe.nome }}</span>
             </div>
-            
+
             <div class="info-item">
               <label>Sistema:</label>
               <span>{{ processo._source.sistema.nome }}</span>
             </div>
-            
+
             <div class="info-item">
-              <label>Órgão Julgador:</label>
+              <label>Orgao julgador:</label>
               <span>{{ processo._source.orgaoJulgador.nome }}</span>
             </div>
-            
+
             <div class="info-item">
-              <label>Data de Ajuizamento:</label>
+              <label>Data de ajuizamento:</label>
               <span>{{ formatarData(processo._source.dataAjuizamento) }}</span>
             </div>
-            
+
             <div class="info-item">
-              <label>Última Atualização:</label>
+              <label>Ultima atualizacao:</label>
               <span>{{ formatarData(processo._source.dataHoraUltimaAtualizacao) }}</span>
             </div>
-            
+
             <div class="info-item">
               <label>Tribunal:</label>
               <span>{{ processo._source.tribunal }}</span>
             </div>
-            
+
             <div class="info-item">
               <label>Grau:</label>
               <span>{{ processo._source.grau }}</span>
@@ -119,28 +118,27 @@
           </div>
         </div>
 
-        <!-- Movimentações -->
         @if (processo._source.movimentos && processo._source.movimentos.length > 0) {
           <div class="movimentacoes">
-            <h4>Movimentações do Processo ({{ processo.totalMovimentos }} total)</h4>
-            
+            <h4>Movimentacoes do processo ({{ processo.totalMovimentos }} total)</h4>
+
             <div class="table-container">
               <table class="movimentos-table">
                 <thead>
                   <tr>
                     <th>Data/Hora</th>
-                    <th>Código</th>
-                    <th>Nome do Movimento</th>
+                    <th>Codigo</th>
+                    <th>Movimento</th>
                     <th>Complementos</th>
                   </tr>
                 </thead>
                 <tbody>
                   @for (movimento of getMovimentosPaginados(); track $index) {
                     <tr>
-                      <td>{{ formatarData(movimento.dataHora) }}</td>
-                      <td>{{ movimento.codigo }}</td>
-                      <td>{{ movimento.nome }}</td>
-                      <td>
+                      <td data-label="Data/Hora">{{ formatarData(movimento.dataHora) }}</td>
+                      <td data-label="Codigo">{{ movimento.codigo }}</td>
+                      <td data-label="Movimento">{{ movimento.nome }}</td>
+                      <td data-label="Complementos">
                         @if (movimento.complementosTabelados && movimento.complementosTabelados.length > 0) {
                           <ul class="complementos-list">
                             @for (complemento of movimento.complementosTabelados; track $index) {
@@ -157,25 +155,24 @@
               </table>
             </div>
 
-            <!-- Paginação -->
             @if (processo.totalMovimentos > itemsPerPage) {
               <div class="paginacao">
-                <button 
-                  mat-button 
-                  (click)="paginaAnterior()" 
+                <button
+                  mat-button
+                  (click)="paginaAnterior()"
                   [disabled]="!hasPreviousPage()">
                   Anterior
                 </button>
-                
+
                 <span class="page-info">
-                  Página {{ page }} - Mostrando {{ getMovimentosPaginados().length }} de {{ processo.totalMovimentos }}
+                  Pagina {{ page }} - Mostrando {{ getMovimentosPaginados().length }} de {{ processo.totalMovimentos }}
                 </span>
-                
-                <button 
-                  mat-button 
-                  (click)="proximaPagina()" 
+
+                <button
+                  mat-button
+                  (click)="proximaPagina()"
                   [disabled]="!hasNextPage()">
-                  Próxima
+                  Proxima
                 </button>
               </div>
             }
@@ -184,20 +181,17 @@
       }
     </div>
 
-    <!-- Estado: Nenhum Resultado -->
     <div class="no-result" [class.show]="consultaFeita && !processo" [class.hide]="!consultaFeita || processo">
       <h3>Nenhum resultado encontrado</h3>
-      <p>Não foram encontradas informações para o processo consultado.</p>
+      <p>Nao foram encontradas informacoes para o processo consultado.</p>
     </div>
 
-    <!-- Estado: Carregando -->
     <div class="loading-state" [class.show]="isLoading || consultaEmAndamento" [class.hide]="!isLoading && !consultaEmAndamento">
       <div class="loading-content">
         <div class="spinner"></div>
         <h3>Consultando processo...</h3>
-        <p>Aguarde enquanto buscamos as informações do processo judicial.</p>
+        <p>Aguarde enquanto buscamos as informacoes do processo judicial.</p>
       </div>
     </div>
-
   </div>
 </div>

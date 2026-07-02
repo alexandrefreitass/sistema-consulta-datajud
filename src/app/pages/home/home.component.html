@@ -1,22 +1,47 @@
 <app-header></app-header>
+
 <main>
-    <section class="main-section pad-70">
-        <div class="headline">
-            <span>API TRIBUNAL</span>
-            <h1>Consumir a API<br/>do Tribunal</h1>
+    <section class="hero-section pad-70">
+        <div class="hero-copy">
+            <span class="eyebrow">Consulta processual via DataJud</span>
+            <h1>Encontre dados judiciais com uma interface simples e segura.</h1>
+            <p>
+                Pesquise processos na base publica do CNJ selecionando o tribunal e informando
+                o numero do processo. A chave de API fica protegida no servidor.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#consulta" class="primary-link">Consultar agora</a>
+                <span>Resposta organizada por dados do processo e movimentacoes.</span>
+            </div>
         </div>
-        <img ngSrc="apitribunal.png" width="300" height="300" priority>
-    </section>
-    <section class="benefit-section pad-70">
-        <div class="benefit-data">
-            <h2>
-                95% dos<br/>
-                advogados
-            </h2>
+
+        <div class="hero-visual" aria-hidden="true">
+            <img ngSrc="datajud-hero-modern.png" width="1024" height="1024" priority alt="">
         </div>
-        <p>não sabem como lidar com problemas de organização de <b>arquivos</b><br/> e grande volume de requisições.</p>
     </section>
-    <section class="cta-section">
+
+    <section id="consulta" class="consulta-section">
         <app-processo-consulta></app-processo-consulta>
     </section>
+
+    <section class="insights-section pad-70" aria-label="Resumo do sistema">
+        <div class="insight-card">
+            <strong>API publica</strong>
+            <span>Consulta intermediada pelo servidor Node.js.</span>
+        </div>
+        <div class="insight-card">
+            <strong>Multitribunais</strong>
+            <span>Selecao de tribunais configurada no formulario.</span>
+        </div>
+        <div class="insight-card">
+            <strong>Movimentacoes</strong>
+            <span>Resultados com paginacao e leitura otimizada.</span>
+        </div>
+    </section>
+
+    <footer class="app-footer">
+        <span>Consulta DataJud</span>
+        <small>Dados consultados na API publica do CNJ</small>
+    </footer>
 </main>
